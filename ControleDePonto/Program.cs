@@ -15,6 +15,10 @@ if (app.Environment.IsDevelopment()) {
 
 app.UseHttpsRedirection();
 
+app.UseFileServer();
+
+app.UseDefaultFiles();
+
 app.UseAuthorization();
 
 app.MapControllers();
