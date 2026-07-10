@@ -1,0 +1,6 @@
+@ControleDePonto_HostAddress = http://localhost:5270
+
+GET {{ControleDePonto_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
