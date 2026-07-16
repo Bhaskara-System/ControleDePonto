@@ -1,26 +1,69 @@
-var builder = WebApplication.CreateBuilder(args);
+using ControleDePonto.Data;
+using ControleDePonto.Repository;
+using ControleDePonto.Service;
+using Microsoft.EntityFrameworkCore;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
 
-// Add services to the container.
+namespace ControleDePonto {
+    class Program {
+        static void Main(string[] args) {
 
-builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+            var builder = WebApplication.CreateBuilder(args);
 
-var app = builder.Build();
+            // Dependencias do Swagger
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment()) {
-    app.MapOpenApi();
+            // Add services to the container.
+
+            builder.Services.AddControllers();
+
+            // Injeção de denpendencia
+            builder.Services.AddScoped<UsuarioRepository>();
+            builder.Services.AddScoped<UsuarioService>();
+
+
+
+
+
+            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+            builder.Services.AddOpenApi();
+
+
+            // Essa Linha configura o banco de dados
+            builder.Services.AddDbContext<AppDbContext>(options => 
+                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+
+            var app = builder.Build();
+
+            // Depndencia do Swagger
+            if (app.Environment.IsDevelopment()) {
+
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
+
+
+
+            // Configure the HTTP request pipeline.
+            if (app.Environment.IsDevelopment()) {
+                app.MapOpenApi();
+            }
+
+            app.UseHttpsRedirection();
+
+            app.UseFileServer();
+
+            app.UseDefaultFiles();
+
+            app.UseAuthorization();
+
+            app.MapControllers();
+
+            app.Run();
+
+        }
+    }
 }
-
-app.UseHttpsRedirection();
-
-app.UseFileServer();
-
-app.UseDefaultFiles();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();

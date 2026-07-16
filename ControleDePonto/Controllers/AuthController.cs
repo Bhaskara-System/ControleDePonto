@@ -1,7 +1,8 @@
 ﻿using ControleDePonto.Models;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
-
+using ControleDePonto.Data;
+using ControleDePonto.Service;
 
 namespace ControleDePonto.Controllers {
 
@@ -9,19 +10,29 @@ namespace ControleDePonto.Controllers {
     [Route("api/[controller]")]
     public class AuthController : ControllerBase {
 
-        List<Usuario> usuarios = new List<Usuario> {
-            new Usuario {
-                Nome = "Cleytoni",
-                Email = "cleytoni@gmail.com",
-                Senha = "123456" }
-        };
+        private readonly UsuarioService _usuarioService;
+
+        public AuthController(UsuarioService usuarioService) {
+
+            _usuarioService = usuarioService;
+
+        }
 
 
         [HttpPost("login")]
         public IActionResult? Login(Usuario usuario) {
 
+
+            var usuarios = _usuarioService.ExibirUsuarios();
+
             var user = usuarios.FirstOrDefault(p => p.Email == usuario.Email);
 
+
+            if (user == null) {
+
+                return null;
+
+            }
 
             if (user.Senha != usuario.Senha) {
 
@@ -29,7 +40,19 @@ namespace ControleDePonto.Controllers {
 
             }
 
-            return Ok();
+            return Ok(user);
+
+        }
+
+
+        [HttpPost("register")]
+        public IActionResult? CriarUsuario(Usuario usuario) {
+
+
+            var user = _usuarioService.CriarUsuario(usuario);
+
+
+            return Created("", user);
 
         }
 
