@@ -4,7 +4,7 @@ using ControleDePonto.Models;
 
 
 
-namespace ControleDePonto.Repository {
+namespace ControleDePonto.Repositories {
     public class UsuarioRepository {
 
         public AppDbContext _appDbContext { get; set; }

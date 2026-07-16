@@ -1,6 +1,6 @@
 using ControleDePonto.Data;
-using ControleDePonto.Repository;
-using ControleDePonto.Service;
+using ControleDePonto.Repositories;
+using ControleDePonto.Services;
 using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
 

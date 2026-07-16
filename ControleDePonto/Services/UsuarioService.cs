@@ -1,8 +1,8 @@
 ﻿
 using ControleDePonto.Models;
-using ControleDePonto.Repository;
+using ControleDePonto.Repositories;
 
-namespace ControleDePonto.Service {
+namespace ControleDePonto.Services {
     public class UsuarioService {
 
         private readonly UsuarioRepository _usuarioRepository;

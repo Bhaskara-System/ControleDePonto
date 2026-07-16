@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using ControleDePonto.Data;
-using ControleDePonto.Service;
+using ControleDePonto.Services;
 
 namespace ControleDePonto.Controllers {
 
