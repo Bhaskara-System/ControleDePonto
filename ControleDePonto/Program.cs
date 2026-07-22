@@ -3,6 +3,8 @@ using ControleDePonto.Repositories;
 using ControleDePonto.Services;
 using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
+using AutoMapper;
+using ControleDePonto.Mappings;
 
 namespace ControleDePonto {
     class Program {
@@ -19,10 +21,12 @@ namespace ControleDePonto {
             builder.Services.AddControllers();
 
             // Injeção de denpendencia
+            builder.Services.AddScoped<FuncionarioRepository>();
+            builder.Services.AddScoped<FuncionarioService>();
+
+            // Injeção de denpendencia
             builder.Services.AddScoped<UsuarioRepository>();
             builder.Services.AddScoped<UsuarioService>();
-
-
 
 
 
@@ -35,6 +39,7 @@ namespace ControleDePonto {
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
+            builder.Services.AddAutoMapper(typeof(FuncionarioProfile));
 
             var app = builder.Build();
 

@@ -10,6 +10,7 @@ namespace ControleDePonto.Data {
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
+        public DbSet<Funcionario> Funcionarios { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
 
     }

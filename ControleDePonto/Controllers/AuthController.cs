@@ -22,25 +22,9 @@ namespace ControleDePonto.Controllers {
         [HttpPost("login")]
         public IActionResult? Login(Usuario usuario) {
 
+            var user = _usuarioService.LoginResponseDto(usuario);
 
-            var usuarios = _usuarioService.ExibirUsuarios();
-
-            var user = usuarios.FirstOrDefault(p => p.Email == usuario.Email);
-
-
-            if (user == null) {
-
-                return null;
-
-            }
-
-            if (user.Senha != usuario.Senha) {
-
-                return null;
-
-            }
-
-            return Ok(user);
+            return Ok();
 
         }
 
@@ -49,10 +33,9 @@ namespace ControleDePonto.Controllers {
         public IActionResult? CriarUsuario(Usuario usuario) {
 
 
-            var user = _usuarioService.CriarUsuario(usuario);
 
 
-            return Created("", user);
+            return null;
 
         }
 

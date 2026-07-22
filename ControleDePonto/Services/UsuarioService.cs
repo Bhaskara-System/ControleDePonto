@@ -1,40 +1,42 @@
 ﻿
-using ControleDePonto.Models;
 using ControleDePonto.Repositories;
+using ControleDePonto.Models;
 
 namespace ControleDePonto.Services {
     public class UsuarioService {
 
-        private readonly UsuarioRepository _usuarioRepository;
+        public UsuarioRepository _usuarioRepository;
 
+        public UsuarioService(UsuarioRepository usuarioService) {
 
-        public UsuarioService(UsuarioRepository usuarioRepository) {
-
-            _usuarioRepository = usuarioRepository;
-
-        }
-
-
-        public List<Usuario>? ExibirUsuarios() {
-
-            var usuarios = _usuarioRepository.ExibirUsuarios();
-
-            return usuarios;
+            _usuarioRepository = usuarioService;
 
         }
 
 
-        public Usuario? CriarUsuario(Usuario usuario) {
+    public Usuario? LoginResponseDto(Usuario usuario) {
 
 
-            var user = _usuarioRepository.CriarUsuario(usuario);
+            if (string.IsNullOrWhiteSpace(usuario.Email)) {
+                return null;
+            }
+
+            if (string.IsNullOrWhiteSpace(usuario.Senha)) {
+                return null;
+            }
 
 
+            var user = _usuarioRepository.BuscarPorEmail(usuario);
+            
+            if (user == null) {
+
+                return null;
+
+            } 
 
             return user;
 
         }
-
 
 
 
