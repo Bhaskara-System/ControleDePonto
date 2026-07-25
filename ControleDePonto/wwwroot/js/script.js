@@ -1,18 +1,22 @@
 const form = document.getElementById("loginForm");
 const mensagem = document.getElementById("mensagem");
+const btnEntrar = document.getElementById("btnEntrar");
 
 form.addEventListener("submit", async function (event) {
     event.preventDefault();
 
-    const email = document.getElementById("email").value;
-    const senha = document.getElementById("senha").value;
+    limparMensagem();
+
+    btnEntrar.disabled = true;
+    btnEntrar.textContent = "Entrando...";
 
     const dadosLogin = {
-        email: email,
-        senha: senha
+        email: document.getElementById("email").value.trim(),
+        senha: document.getElementById("senha").value
     };
 
     try {
+
         const resposta = await fetch("/api/Auth/login", {
             method: "POST",
             headers: {
@@ -22,21 +26,51 @@ form.addEventListener("submit", async function (event) {
         });
 
         if (!resposta.ok) {
-            mensagem.textContent = "E-mail ou senha inválidos.";
-            mensagem.style.color = "red";
+            exibirMensagem(
+                "E-mail ou senha inválidos.",
+                "erro"
+            );
+
             return;
         }
 
+        const dados = await resposta.json();
 
-        localStorage.setItem("logado", true);
+        localStorage.setItem("token", dados.token);
 
-        mensagem.textContent = "Login realizado com sucesso!";
-        mensagem.style.color = "green";
-        window.location.href = "/home.html";
+        exibirMensagem(
+            "Login realizado com sucesso!",
+            "sucesso"
+        );
+
+        setTimeout(function () {
+            window.location.href = "/home.html";
+        }, 800);
 
     } catch (erro) {
-        mensagem.textContent = "Erro ao conectar com a API.";
-        mensagem.style.color = "red";
+
         console.error(erro);
+
+        exibirMensagem(
+            "Erro ao conectar com a API.",
+            "erro"
+        );
+
+    } finally {
+
+        btnEntrar.disabled = false;
+        btnEntrar.textContent = "Entrar";
     }
 });
+
+function exibirMensagem(texto, tipo) {
+
+    mensagem.textContent = texto;
+    mensagem.className = tipo;
+}
+
+function limparMensagem() {
+
+    mensagem.textContent = "";
+    mensagem.className = "";
+}

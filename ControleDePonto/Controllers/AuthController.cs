@@ -18,13 +18,12 @@ namespace ControleDePonto.Controllers {
 
         }
 
-
         [HttpPost("login")]
         public IActionResult? Login(Usuario usuario) {
 
-            var user = _usuarioService.LoginResponseDto(usuario);
+            var user = _usuarioService.Login(usuario);
 
-            return Ok();
+            return Ok(user);
 
         }
 

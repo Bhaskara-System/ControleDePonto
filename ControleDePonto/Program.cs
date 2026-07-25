@@ -1,10 +1,13 @@
 using ControleDePonto.Data;
-using ControleDePonto.Repositories;
-using ControleDePonto.Services;
-using Microsoft.EntityFrameworkCore;
-using Npgsql.EntityFrameworkCore.PostgreSQL;
-using AutoMapper;
 using ControleDePonto.Mappings;
+using ControleDePonto.Repositories;
+using ControleDePonto.Service;
+using ControleDePonto.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens.Experimental;
+using System.Text;
 
 namespace ControleDePonto {
     class Program {
@@ -29,6 +32,8 @@ namespace ControleDePonto {
             builder.Services.AddScoped<UsuarioService>();
 
 
+            builder.Services.AddScoped<JwtService>();
+
 
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
@@ -37,6 +42,26 @@ namespace ControleDePonto {
             // Essa Linha configura o banco de dados
             builder.Services.AddDbContext<AppDbContext>(options => 
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            // Aqui ele faz a validação do token
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options => {
+
+                    options.TokenValidationParameters = new TokenValidationParameters {
+
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+
+                        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                        ValidAudience = builder.Configuration["Jwt:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
+                    };
+
+
+                });
+
 
 
             builder.Services.AddAutoMapper(typeof(FuncionarioProfile));

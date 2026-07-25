@@ -7,29 +7,39 @@
 </head>
 <body>
 
-    <main class="login-container">
-        <section class="login-card">
-            <h1>PontCom</h1>
-            <p>Entre com sua conta</p>
+<div class="login-container">
 
-            <form id="loginForm">
-                <div class="input-group">
-                    <label for="email">E-mail</label>
-                    <input type="email" id="email" required>
-                </div>
+    <div class="login-card">
 
-                <div class="input-group">
-                    <label for="senha">Senha</label>
-                    <input type="password" id="senha" required>
-                </div>
+        <h1>PontCom</h1>
 
-                <button type="submit">Entrar</button>
+        <p>Entre com sua conta</p>
 
-                <p id="mensagem"></p>
-            </form>
-        </section>
-    </main>
+        <form id="loginForm">
 
-    <script src="js/script.js"></script>
+            <div class="input-group">
+                <label>E-mail</label>
+                <input id="email" type="email" required>
+            </div>
+
+            <div class="input-group">
+                <label>Senha</label>
+                <input id="senha" type="password" required>
+            </div>
+
+            <button id="btnEntrar" type="submit">
+                Entrar
+            </button>
+
+            <p id="mensagem"></p>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script src="js/script.js"></script>
+
 </body>
 </html>
