@@ -1,3 +1,9 @@
+const token = localStorage.getItem("token");
+
+if (!token) {
+    window.location.href = "/";
+}
+
 const modalOverlay =
     document.getElementById("modalOverlay");
 
@@ -54,8 +60,7 @@ document.addEventListener("keydown", function (event) {
 });
 
 btnSair.addEventListener("click", function () {
-    // localStorage.removeItem("token");
-    localStorage.removeItem("logado");
+    localStorage.removeItem("token");
 
     window.location.href = "/index.html";
 });
@@ -141,20 +146,23 @@ async function cadastrarFuncionario(event) {
             );
         }
 
-        exibirMensagem(
-            "Funcionário cadastrado com sucesso.",
-            "sucesso"
+        mostrarToast(
+            "success",
+            "Cadastro realizado!",
+            "Funcionário cadastrado com sucesso."
         );
 
         event.target.reset();
+        fecharModal();
 
     } catch (erro) {
         console.error(erro);
 
-        exibirMensagem(
+        mostrarToast(
+            "error",
+            "Erro no cadastro!",
             erro.message ||
-            "Não foi possível cadastrar o funcionário.",
-            "erro"
+            "Não foi possível cadastrar o funcionário."
         );
 
     } finally {
@@ -876,4 +884,53 @@ function alterarBotaoFormulario(
 
     botao.disabled = carregando;
     botao.textContent = texto;
+}
+
+let tempoToast;
+
+function mostrarToast(tipo, titulo, mensagem) {
+    const toast = document.getElementById("toast");
+    const toastTitulo =
+        document.getElementById("toastTitulo");
+    const toastMensagem =
+        document.getElementById("toastMensagem");
+
+    if (!toast || !toastTitulo || !toastMensagem) {
+        console.error(
+            "Os elementos do toast não foram encontrados no HTML."
+        );
+
+        return;
+    }
+
+    /*
+        Remove apenas as classes usadas anteriormente,
+        evitando que o toast mantenha duas cores.
+    */
+    toast.classList.remove(
+        "show",
+        "success",
+        "error",
+        "warning",
+        "info"
+    );
+
+    toast.classList.add(tipo);
+
+    toastTitulo.textContent = titulo;
+    toastMensagem.textContent = mensagem;
+
+    /*
+        Força o navegador a reconhecer que a classe
+        show foi removida antes de adicioná-la novamente.
+    */
+    void toast.offsetWidth;
+
+    toast.classList.add("show");
+
+    clearTimeout(tempoToast);
+
+    tempoToast = setTimeout(function () {
+        toast.classList.remove("show");
+    }, 3000);
 }

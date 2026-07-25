@@ -1,6 +1,6 @@
-const logado = localStorage.getItem("logado");
+const token = localStorage.getItem("token");
 
-if (!logado) {
+if (!token) {
     window.location.href = "/";
 }
 
@@ -8,7 +8,7 @@ const tabelaRegistros = document.getElementById("tabelaRegistros");
 const btnSair = document.getElementById("btnSair");
 
 btnSair.addEventListener("click", function () {
-    localStorage.removeItem("logado");
+    localStorage.removeItem("token");
     window.location.href = "/";
 });
 
