@@ -3,6 +3,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using ControleDePonto.Data;
 using ControleDePonto.Services;
+using ControleDePonto.DTOs.Requests;
 
 namespace ControleDePonto.Controllers {
 
@@ -19,24 +20,35 @@ namespace ControleDePonto.Controllers {
         }
 
         [HttpPost("login")]
-        public IActionResult? Login(Usuario usuario) {
+        public IActionResult? Login(LoginDto dto) {
 
-            var user = _usuarioService.Login(usuario);
+            var resultado = _usuarioService.Login(dto);
 
-            return Ok(user);
+            if (!resultado.Status) {
+
+                return Unauthorized(
+
+                    new { resultado.Menssagem});
+
+            }
+
+            return Ok(new {
+
+                menssagem = resultado.Menssagem,
+                token = resultado.Token
+
+            });
 
         }
-
 
         [HttpPost("register")]
-        public IActionResult? CriarUsuario(Usuario usuario) {
+        public IActionResult? CriarUsuario(CriarUsuarioDto dto) {
 
+            var usuario = _usuarioService.CriarUsuario(dto);
 
-
-
-            return null;
-
+            return Created("", usuario);
         }
+
 
 
     }

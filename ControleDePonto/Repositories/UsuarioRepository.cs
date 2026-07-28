@@ -6,7 +6,7 @@ namespace ControleDePonto.Repositories {
     public class UsuarioRepository {
 
 
-        public AppDbContext _appDbContext;
+        private readonly AppDbContext _appDbContext;
 
 
         public UsuarioRepository(AppDbContext appDbContext) {
@@ -15,12 +15,21 @@ namespace ControleDePonto.Repositories {
         }
 
 
-        public Usuario? BuscarPorEmail(Usuario usuario) {
+        public Usuario? BuscarPorEmail(string email) {
 
-            var user = _appDbContext.Usuarios.FirstOrDefault(p => p.Email == usuario.Email);
+            var user = _appDbContext.Usuarios.FirstOrDefault(p => p.Email == email);
 
 
             return user;
+
+        }
+
+        public Usuario? CriarUsuario(Usuario usuario) {
+
+            _appDbContext.Usuarios.Add(usuario);
+            _appDbContext.SaveChanges();
+
+            return usuario;
 
         }
 

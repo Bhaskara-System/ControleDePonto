@@ -65,6 +65,8 @@ namespace ControleDePonto {
 
 
             builder.Services.AddAutoMapper(typeof(FuncionarioProfile));
+            builder.Services.AddAutoMapper(typeof(UsuarioProfile));
+
 
             var app = builder.Build();
 

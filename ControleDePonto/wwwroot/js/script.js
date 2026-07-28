@@ -27,7 +27,7 @@ form.addEventListener("submit", async function (event) {
 
         if (!resposta.ok) {
             exibirMensagem(
-                "E-mail ou senha inválidos.",
+                dados.mensagem,
                 "erro"
             );
 

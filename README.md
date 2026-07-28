@@ -40,4 +40,12 @@ Algumas funcionalidades ainda não foram implementadas e poderão sofrer altera�
 - JavaScript
 - Git e GitHub
 
-![RegistroDeponoPage](assets/RegistrosDePontos.png)
+<p align="center">
+  <img src="assets/RegistrosDePontos.png" width="800">
+</p>
+
+<p align="center">
+  <img src="assets/CurtoVideo.gif" width="800">
+</p>
+
+

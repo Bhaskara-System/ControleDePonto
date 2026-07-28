@@ -7,7 +7,7 @@ using ControleDePonto.Models;
 namespace ControleDePonto.Repositories {
     public class FuncionarioRepository {
 
-        public AppDbContext _appDbContext { get; set; }
+        private AppDbContext _appDbContext { get; set; }
 
 
         public FuncionarioRepository(AppDbContext appDbContext) {
