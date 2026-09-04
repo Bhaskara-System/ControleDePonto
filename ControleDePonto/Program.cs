@@ -62,10 +62,10 @@ namespace ControleDePonto {
 
                 });
 
-
+            builder.Services.AddAuthorization();
 
             builder.Services.AddAutoMapper(typeof(FuncionarioProfile));
-            builder.Services.AddAutoMapper(typeof(UsuarioProfile));
+            // builder.Services.AddAutoMapper(typeof(UsuarioProfile));
 
 
             var app = builder.Build();
@@ -90,7 +90,9 @@ namespace ControleDePonto {
 
             app.UseDefaultFiles();
 
-            app.UseAuthorization();
+            app.UseAuthentication(); // Autentificação do Token
+
+            app.UseAuthorization(); 
 
             app.MapControllers();
 

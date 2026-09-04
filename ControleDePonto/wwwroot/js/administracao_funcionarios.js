@@ -327,16 +327,23 @@ async function atualizarFuncionario(event) {
             );
         }
 
-        exibirMensagem(
-            "Funcionário atualizado com sucesso.",
-            "sucesso"
-        );
+        mostrarToast(
+                    "success",
+                    "Cadastro atualizado!",
+                    "Funcionário atualizado com sucesso."
+                );
+
+        event.target.reset();
+        fecharModal();
 
     } catch (erro) {
-        exibirMensagem(
+        console.error(erro);
+        
+        mostrarToast(
+            "error",
+            "Erro no cadastro!",
             erro.message ||
-            "Não foi possível atualizar o funcionário.",
-            "erro"
+            "Não foi possível cadastrar o funcionário."
         );
 
     } finally {

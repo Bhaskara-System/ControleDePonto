@@ -3,6 +3,7 @@ using ControleDePonto.Models;
 using ControleDePonto.Repositories;
 using ControleDePonto.DTOs.Requests;
 using AutoMapper;
+using ControleDePonto.DTOs.Responses;
 
 namespace ControleDePonto.Services {
     public class FuncionarioService {
@@ -32,11 +33,12 @@ namespace ControleDePonto.Services {
 
         public Funcionario? CriarFuncionario(CriarFuncionarioDto dto) {
 
+            // Aqui ele converte os dados de dto para o funcionario
             var funcinario = _mapper.Map<Funcionario>(dto);
 
-            var userioExiste = _funcionarioRepository.ExibirFuncionario(funcinario);
+            var funcinarioExiste = _funcionarioRepository.ConsultarFuncionario(funcinario.Cpf);
 
-            if (userioExiste != null) {
+            if (funcinarioExiste != null) {
 
                 return null;
             }
@@ -55,18 +57,35 @@ namespace ControleDePonto.Services {
 
         }
 
-        public Funcionario? ExibirFuncionario(Funcionario usuario) {
+        public Funcionario? ConsultaFuncionario(string valor) {
 
 
-            var user = _funcionarioRepository.ExibirFuncionario(usuario);
+            var funcionario = _funcionarioRepository.ConsultarFuncionario(valor);
 
-            if (user == null) {
+            if (funcionario == null) {
 
                 return null;
 
             }
 
-            return user;
+            return funcionario;
+
+        }
+
+
+        public Funcionario? AtualizarFuncionario(int id, AtualizarFuncionarioDto dto) {
+
+            var funcionarioExistente = _funcionarioRepository.ConsultarFuncionario(dto.Cpf);
+
+            if (funcionarioExistente == null) {
+
+                return null;
+            }
+
+            _mapper.Map(dto, funcionarioExistente);
+
+
+            return _funcionarioRepository.AtualizarFuncionario(funcionarioExistente); ;
 
         }
 

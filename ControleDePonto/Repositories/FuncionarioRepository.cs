@@ -28,11 +28,11 @@ namespace ControleDePonto.Repositories {
         }
 
 
-        public Funcionario? ExibirFuncionario(Funcionario funcionario) {
+        public Funcionario?ConsultarFuncionario(string valor) {
 
-            var emploeyee = _appDbContext.Funcionarios.FirstOrDefault(p => p.Email == funcionario.Email);
+            var funcionario = _appDbContext.Funcionarios.FirstOrDefault(p => p.Cpf == valor);
 
-            return emploeyee;
+            return funcionario;
 
         }
 
@@ -45,6 +45,18 @@ namespace ControleDePonto.Repositories {
             return funcionario;
 
         }
+
+
+        public Funcionario? AtualizarFuncionario(Funcionario funcionarioExistente) {
+
+            _appDbContext.SaveChanges();
+
+            return funcionarioExistente;
+
+        }
+
+
+
 
 
 

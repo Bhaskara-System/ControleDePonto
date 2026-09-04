@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ControleDePonto.Data;
 using ControleDePonto.Services;
 using ControleDePonto.DTOs.Requests;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ControleDePonto.Controllers {
 
@@ -19,6 +20,7 @@ namespace ControleDePonto.Controllers {
 
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public IActionResult? Login(LoginDto dto) {
 

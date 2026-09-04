@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ControleDePonto.DTOs.Requests;
+using ControleDePonto.DTOs.Responses;
 using ControleDePonto.Models;
 
 namespace ControleDePonto.Mappings {
@@ -8,6 +9,8 @@ namespace ControleDePonto.Mappings {
         public FuncionarioProfile() {
 
             CreateMap<CriarFuncionarioDto, Funcionario>();
+
+            CreateMap<AtualizarFuncionarioDto, Funcionario>();
 
         }
 
