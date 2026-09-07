@@ -1,50 +1,150 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
-    <title>Registros de Ponto</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Registros | Controle de Ponto</title>
+
     <link rel="stylesheet" href="css/registros.css">
 </head>
+
 <body>
 
+    <!-- Sidebar -->
     <aside class="sidebar">
+
         <h2>Controle de Ponto</h2>
 
         <nav>
-            <a href="/home.html">Início</a>
-            <a href="#">Funcionários</a>
-            <a href="#" class="active">Registros</a>
-            <a href="/administracao_funcionarios.html">Painel Administrativo</a>
+
+            <a href="/home.html">
+                Início
+            </a>
+
+            <a href="#">
+                Funcionários
+            </a>
+
+            <a href="/registros.html" class="active">
+                Registros
+            </a>
+
+            <a href="/administracao_funcionarios.html">
+                Painel Administrativo
+            </a>
+
         </nav>
 
-        <button id="btnSair">Sair</button>
+
+        <!-- Perfil + Botão Sair -->
+        <div class="sidebar-footer">
+
+            <!-- Clique no perfil para abrir a página de perfil -->
+            <a
+                href="/perfil.html"
+                class="user-profile-btn"
+                title="Ver meu perfil">
+
+                <div class="user-profile">
+
+                    <!-- ADICIONADO: id="avatarSidebar" para vínculo com global.js -->
+                    <img
+                        id="avatarSidebar"
+                        src="/ft_perfil/sem_foto.png"
+                        alt="Foto do Usuário"
+                        class="avatar"
+                    >
+
+                    <div class="user-info">
+
+                        <span
+                            class="user-name"
+                            id="nomeSidebar">
+                            Nome do Usuário
+                        </span>
+
+                        <span
+                            class="user-role"
+                            id="cargoSidebar">
+                            Administrador
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+
+            <!-- Sair -->
+            <button
+                id="btnSair"
+                type="button">
+                Sair
+            </button>
+
+        </div>
+
     </aside>
 
+
+    <!-- Conteúdo principal -->
     <main class="content">
+
         <header>
-            <h1>Registros de Ponto</h1>
-            <p>Confira todos os pontos registrados pelo funcionário.</p>
+
+            <h1>
+                Registros de Ponto
+            </h1>
+
+            <p>
+                Confira todos os pontos registrados pelo funcionário.
+            </p>
+
         </header>
 
+
+        <!-- Tabela de registros -->
         <section class="table-card">
+
             <table>
+
                 <thead>
+
                     <tr>
                         <th>Data</th>
                         <th>Entrada</th>
                         <th>Saída</th>
                         <th>Status</th>
                     </tr>
+
                 </thead>
+
                 <tbody id="tabelaRegistros">
+
                     <tr>
-                        <td colspan="4">Carregando registros...</td>
+                        <td colspan="4">
+                            Carregando registros...
+                        </td>
                     </tr>
+
                 </tbody>
+
             </table>
+
         </section>
+
     </main>
 
+
+    <!-- Script único compartilhado da aplicação -->
+    <script src="js/global.js"></script>
+
+    <!-- Script específico da tabela de registros -->
     <script src="js/registros.js"></script>
+
 </body>
+
 </html>

@@ -1,6 +1,7 @@
 ﻿
 using ControleDePonto.Data;
 using ControleDePonto.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ControleDePonto.Repositories {
     public class UsuarioRepository {
@@ -30,6 +31,14 @@ namespace ControleDePonto.Repositories {
             _appDbContext.SaveChanges();
 
             return usuario;
+
+        }
+
+        public Usuario? BuscarPorIdComFuncionario(int id) {
+
+            return _appDbContext.Usuarios
+                .Include(u => u.Funcionario) //  Carrega a tabela de funcionario vinculada
+                .FirstOrDefault(u => u.Id == id);
 
         }
 

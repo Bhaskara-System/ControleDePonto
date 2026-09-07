@@ -1,71 +1,67 @@
-const token = localStorage.getItem("token");
+// ============================================================
+// PAINEL ADMINISTRATIVO DE FUNCIONÁRIOS (administracao_funcionarios.js)
+// ============================================================
 
-if (!token) {
-    window.location.href = "/";
-}
+const API_URL = "/api/Funcionario";
 
-const modalOverlay =
-    document.getElementById("modalOverlay");
+// Elementos da Interface (DOM)
+let modalOverlay;
+let modalConteudo;
+let modalTitulo;
+let modalDescricao;
+let modalMensagem;
+let btnFecharModal;
 
-const modalConteudo =
-    document.getElementById("modalConteudo");
+// Inicialização e Eventos da Página
+document.addEventListener("DOMContentLoaded", function () {
+    // Inicializa referências do DOM após carregamento do HTML
+    modalOverlay = document.getElementById("modalOverlay");
+    modalConteudo = document.getElementById("modalConteudo");
+    modalTitulo = document.getElementById("modalTitulo");
+    modalDescricao = document.getElementById("modalDescricao");
+    modalMensagem = document.getElementById("modalMensagem");
+    btnFecharModal = document.getElementById("btnFecharModal");
 
-const modalTitulo =
-    document.getElementById("modalTitulo");
+    // Registra clique nos cards que abrem as modais
+    const botoesAdministracao = document.querySelectorAll("[data-modal]");
+    botoesAdministracao.forEach(function (botao) {
+        botao.addEventListener("click", function () {
+            const opcao = botao.dataset.modal;
+            abrirModal(opcao);
+        });
+    });
 
-const modalDescricao =
-    document.getElementById("modalDescricao");
+    // Eventos de Fechamento do Modal
+    if (btnFecharModal) {
+        btnFecharModal.addEventListener("click", fecharModal);
+    }
 
-const modalMensagem =
-    document.getElementById("modalMensagem");
+    if (modalOverlay) {
+        modalOverlay.addEventListener("click", function (event) {
+            if (event.target === modalOverlay) {
+                fecharModal();
+            }
+        });
+    }
 
-const btnFecharModal =
-    document.getElementById("btnFecharModal");
-
-const btnSair =
-    document.getElementById("btnSair");
-
-const botoesAdministracao =
-    document.querySelectorAll("[data-modal]");
-
-/*
-    Altere de acordo com a porta e as rotas da sua API.
-*/
-const API_URL =
-    "/api/Funcionario";
-
-botoesAdministracao.forEach(function (botao) {
-    botao.addEventListener("click", function () {
-        const opcao = botao.dataset.modal;
-
-        abrirModal(opcao);
+    document.addEventListener("keydown", function (event) {
+        if (
+            event.key === "Escape" &&
+            modalOverlay &&
+            modalOverlay.classList.contains("aberto")
+        ) {
+            fecharModal();
+        }
     });
 });
 
-btnFecharModal.addEventListener("click", fecharModal);
-
-modalOverlay.addEventListener("click", function (event) {
-    if (event.target === modalOverlay) {
-        fecharModal();
-    }
-});
-
-document.addEventListener("keydown", function (event) {
-    if (
-        event.key === "Escape" &&
-        modalOverlay.classList.contains("aberto")
-    ) {
-        fecharModal();
-    }
-});
-
-btnSair.addEventListener("click", function () {
-    localStorage.removeItem("token");
-
-    window.location.href = "/index.html";
-});
+// =========================
+// CONTROLE DE EXIBIÇÃO DA MODAL
+// =========================
 
 function abrirModal(opcao) {
+    if (!modalOverlay) return;
+
     ocultarMensagem();
 
     if (opcao === "cadastrar") {
@@ -81,55 +77,40 @@ function abrirModal(opcao) {
     }
 
     modalOverlay.classList.add("aberto");
-
     document.body.style.overflow = "hidden";
 }
 
 function fecharModal() {
+    if (!modalOverlay) return;
+
     modalOverlay.classList.remove("aberto");
-
     modalConteudo.innerHTML = "";
-
     ocultarMensagem();
-
     document.body.style.overflow = "";
 }
 
 /* =========================
-   CADASTRO
+   CADASTRO DE FUNCIONÁRIO
 ========================= */
 
 function abrirCadastro() {
-    modalTitulo.textContent =
-        "Cadastrar funcionário";
-
-    modalDescricao.textContent =
-        "Preencha os dados do novo funcionário.";
-
-    modalConteudo.innerHTML =
-        criarFormularioFuncionario("cadastrar");
-
-    const formulario =
-        document.getElementById("formFuncionario");
+    modalTitulo.textContent = "Cadastrar funcionário";
+    modalDescricao.textContent = "Preencha os dados do novo funcionário.";
+    modalConteudo.innerHTML = criarFormularioFuncionario("cadastrar");
 
     aplicarMascaras();
 
-    formulario.addEventListener(
-        "submit",
-        cadastrarFuncionario
-    );
+    document
+        .getElementById("formFuncionario")
+        .addEventListener("submit", cadastrarFuncionario);
 }
 
 async function cadastrarFuncionario(event) {
     event.preventDefault();
-
     const funcionario = obterDadosFormulario();
 
     try {
-        alterarBotaoFormulario(
-            true,
-            "Cadastrando..."
-        );
+        alterarBotaoFormulario(true, "Cadastrando...");
 
         const response = await fetch(`${API_URL}/cadastrar`, {
             method: "POST",
@@ -137,13 +118,10 @@ async function cadastrarFuncionario(event) {
             body: JSON.stringify(funcionario)
         });
 
-        const resposta =
-            await lerResposta(response);
+        const resposta = await lerResposta(response);
 
         if (!response.ok) {
-            throw new Error(
-                obterMensagemErro(resposta)
-            );
+            throw new Error(obterMensagemErro(resposta));
         }
 
         mostrarToast(
@@ -161,38 +139,29 @@ async function cadastrarFuncionario(event) {
         mostrarToast(
             "error",
             "Erro no cadastro!",
-            erro.message ||
-            "Não foi possível cadastrar o funcionário."
+            erro.message || "Não foi possível cadastrar o funcionário."
         );
 
     } finally {
-        alterarBotaoFormulario(
-            false,
-            "Cadastrar"
-        );
+        alterarBotaoFormulario(false, "Cadastrar");
     }
 }
 
 /* =========================
-   ATUALIZAÇÃO
+   ATUALIZAÇÃO DE FUNCIONÁRIO
 ========================= */
 
 function abrirAtualizacao() {
-    modalTitulo.textContent =
-        "Atualizar funcionário";
-
-    modalDescricao.textContent =
-        "Pesquise um funcionário para atualizar seus dados.";
+    modalTitulo.textContent = "Atualizar funcionário";
+    modalDescricao.textContent = "Pesquise um funcionário para atualizar seus dados.";
 
     modalConteudo.innerHTML = `
         <div class="search-area">
-
             <input
                 type="text"
                 id="pesquisaFuncionario"
                 placeholder="Digite o CPF ou a matrícula"
             >
-
             <button
                 type="button"
                 id="btnPesquisarFuncionario"
@@ -200,53 +169,30 @@ function abrirAtualizacao() {
             >
                 Pesquisar
             </button>
-
         </div>
-
         <div id="resultadoPesquisa"></div>
     `;
 
-    const btnPesquisar =
-        document.getElementById(
-            "btnPesquisarFuncionario"
-        );
-
-    btnPesquisar.addEventListener(
-        "click",
-        pesquisarFuncionario
-    );
+    document
+        .getElementById("btnPesquisarFuncionario")
+        .addEventListener("click", pesquisarFuncionario);
 }
 
 async function pesquisarFuncionario() {
     const pesquisa = document
         .getElementById("pesquisaFuncionario")
-        .value
-        .trim();
+        .value.trim();
 
-    const resultado =
-        document.getElementById(
-            "resultadoPesquisa"
-        );
+    const resultado = document.getElementById("resultadoPesquisa");
 
     if (!pesquisa) {
-        exibirMensagem(
-            "Informe o CPF ou a matrícula.",
-            "erro"
-        );
-
+        exibirMensagem("Informe o CPF ou a matrícula.", "erro");
         return;
     }
 
-    resultado.innerHTML =
-        `<p class="lista-vazia">Pesquisando...</p>`;
+    resultado.innerHTML = `<p class="lista-vazia">Pesquisando...</p>`;
 
     try {
-        /*
-            Exemplo de rota:
-
-            GET /api/funcionarios/pesquisar?valor=1001
-        */
-
         const response = await fetch(
             `${API_URL}/pesquisar?valor=${encodeURIComponent(pesquisa)}`,
             {
@@ -254,169 +200,108 @@ async function pesquisarFuncionario() {
             }
         );
 
-        const funcionario =
-            await lerResposta(response);
+        const funcionario = await lerResposta(response);
 
         if (!response.ok) {
-            throw new Error(
-                obterMensagemErro(funcionario)
-            );
+            throw new Error(obterMensagemErro(funcionario));
         }
 
-        resultado.innerHTML =
-            criarFormularioFuncionario(
-                "atualizar",
-                funcionario
-            );
-
+        resultado.innerHTML = criarFormularioFuncionario("atualizar", funcionario);
         aplicarMascaras();
 
-        const formulario =
-            document.getElementById(
-                "formFuncionario"
-            );
-
-        formulario.addEventListener(
-            "submit",
-            atualizarFuncionario
-        );
+        document
+            .getElementById("formFuncionario")
+            .addEventListener("submit", atualizarFuncionario);
 
     } catch (erro) {
         resultado.innerHTML = "";
-
-        exibirMensagem(
-            erro.message ||
-            "Funcionário não encontrado.",
-            "erro"
-        );
+        exibirMensagem(erro.message || "Funcionário não encontrado.", "erro");
     }
 }
 
 async function atualizarFuncionario(event) {
     event.preventDefault();
 
-    const funcionario =
-        obterDadosFormulario();
-
-    const funcionarioId =
-        document.getElementById(
-            "funcionarioId"
-        ).value;
+    const funcionario = obterDadosFormulario();
 
     try {
-        alterarBotaoFormulario(
-            true,
-            "Atualizando..."
-        );
+        alterarBotaoFormulario(true, "Atualizando...");
 
-        const response = await fetch(
-            `${API_URL}/${funcionarioId}`,
-            {
-                method: "PUT",
-                headers: criarHeaders(),
-                body: JSON.stringify(funcionario)
-            }
-        );
+        const response = await fetch(`${API_URL}/${funcionario.cpf}`, {
+            method: "PUT",
+            headers: criarHeaders(),
+            body: JSON.stringify(funcionario)
+        });
 
-        const resposta =
-            await lerResposta(response);
+        const resposta = await lerResposta(response);
 
         if (!response.ok) {
-            throw new Error(
-                obterMensagemErro(resposta)
-            );
+            throw new Error(obterMensagemErro(resposta));
         }
 
         mostrarToast(
-                    "success",
-                    "Cadastro atualizado!",
-                    "Funcionário atualizado com sucesso."
-                );
+            "success",
+            "Cadastro atualizado!",
+            "Funcionário atualizado com sucesso."
+        );
 
         event.target.reset();
         fecharModal();
 
     } catch (erro) {
         console.error(erro);
-        
+
         mostrarToast(
             "error",
-            "Erro no cadastro!",
-            erro.message ||
-            "Não foi possível cadastrar o funcionário."
+            "Erro na atualização!",
+            erro.message || "Não foi possível atualizar o funcionário."
         );
 
     } finally {
-        alterarBotaoFormulario(
-            false,
-            "Atualizar"
-        );
+        alterarBotaoFormulario(false, "Atualizar");
     }
 }
 
 /* =========================
-   LISTAGEM
+   LISTAGEM DE FUNCIONÁRIOS
 ========================= */
 
 async function abrirListaFuncionarios() {
-    modalTitulo.textContent =
-        "Funcionários sob minha jurisdição";
-
-    modalDescricao.textContent =
-        "Funcionários que estão sob sua responsabilidade.";
-
-    modalConteudo.innerHTML =
-        `<p class="lista-vazia">Carregando funcionários...</p>`;
+    modalTitulo.textContent = "Funcionários sob minha jurisdição";
+    modalDescricao.textContent = "Funcionários que estão sob sua responsabilidade.";
+    modalConteudo.innerHTML = `<p class="lista-vazia">Carregando funcionários...</p>`;
 
     try {
-        /*
-            Exemplo de rota:
+        const response = await fetch(`${API_URL}/jurisdicao`, {
+            headers: criarHeaders()
+        });
 
-            GET /api/funcionarios/jurisdicao
-        */
-
-        const response = await fetch(
-            `${API_URL}/jurisdicao`,
-            {
-                headers: criarHeaders()
-            }
-        );
-
-        const funcionarios =
-            await lerResposta(response);
+        const funcionarios = await lerResposta(response);
 
         if (!response.ok) {
-            throw new Error(
-                obterMensagemErro(funcionarios)
-            );
+            throw new Error(obterMensagemErro(funcionarios));
         }
 
         renderizarTabela(funcionarios);
 
     } catch (erro) {
-        modalConteudo.innerHTML =
-            `<p class="lista-vazia">
+        modalConteudo.innerHTML = `
+            <p class="lista-vazia">
                 Não foi possível carregar os funcionários.
-            </p>`;
+            </p>
+        `;
 
-        exibirMensagem(
-            erro.message,
-            "erro"
-        );
+        exibirMensagem(erro.message, "erro");
     }
 }
 
 function renderizarTabela(funcionarios) {
-    if (
-        !Array.isArray(funcionarios) ||
-        funcionarios.length === 0
-    ) {
+    if (!Array.isArray(funcionarios) || funcionarios.length === 0) {
         modalConteudo.innerHTML = `
             <p class="lista-vazia">
                 Nenhum funcionário encontrado.
             </p>
         `;
-
         return;
     }
 
@@ -428,12 +313,11 @@ function renderizarTabela(funcionarios) {
                     <td>${funcionario.nome}</td>
                     <td>${funcionario.email}</td>
                     <td>${funcionario.hierarquia}</td>
-
                     <td>
                         <button
                             type="button"
                             class="btn-editar"
-                            data-id="${funcionario.id}"
+                            data-cpf="${funcionario.cpf}"
                         >
                             Editar
                         </button>
@@ -445,9 +329,7 @@ function renderizarTabela(funcionarios) {
 
     modalConteudo.innerHTML = `
         <div class="table-container">
-
             <table>
-
                 <thead>
                     <tr>
                         <th>Matrícula</th>
@@ -457,74 +339,53 @@ function renderizarTabela(funcionarios) {
                         <th>Ações</th>
                     </tr>
                 </thead>
-
                 <tbody>
                     ${linhas}
                 </tbody>
-
             </table>
-
         </div>
     `;
 
     document
         .querySelectorAll(".btn-editar")
         .forEach(function (botao) {
-            botao.addEventListener(
-                "click",
-                function () {
-                    abrirEdicaoPeloId(
-                        botao.dataset.id
-                    );
-                }
-            );
+            botao.addEventListener("click", function () {
+                abrirEdicaoPeloCpf(botao.dataset.cpf);
+            });
         });
 }
 
-async function abrirEdicaoPeloId(id) {
+async function abrirEdicaoPeloCpf(cpf) {
     try {
         const response = await fetch(
-            `${API_URL}/${id}`,
+            `${API_URL}/pesquisar?valor=${encodeURIComponent(cpf)}`,
             {
                 headers: criarHeaders()
             }
         );
 
-        const funcionario =
-            await lerResposta(response);
+        const funcionario = await lerResposta(response);
 
         if (!response.ok) {
-            throw new Error(
-                obterMensagemErro(funcionario)
-            );
+            throw new Error(obterMensagemErro(funcionario));
         }
 
-        modalTitulo.textContent =
-            "Atualizar funcionário";
+        modalTitulo.textContent = "Atualizar funcionário";
+        modalDescricao.textContent = "Altere os dados necessários.";
 
-        modalDescricao.textContent =
-            "Altere os dados necessários.";
-
-        modalConteudo.innerHTML =
-            criarFormularioFuncionario(
-                "atualizar",
-                funcionario
-            );
+        modalConteudo.innerHTML = criarFormularioFuncionario(
+            "atualizar",
+            funcionario
+        );
 
         aplicarMascaras();
 
         document
             .getElementById("formFuncionario")
-            .addEventListener(
-                "submit",
-                atualizarFuncionario
-            );
+            .addEventListener("submit", atualizarFuncionario);
 
     } catch (erro) {
-        exibirMensagem(
-            erro.message,
-            "erro"
-        );
+        exibirMensagem(erro.message, "erro");
     }
 }
 
@@ -532,18 +393,11 @@ async function abrirEdicaoPeloId(id) {
    FORMULÁRIO DINÂMICO
 ========================= */
 
-function criarFormularioFuncionario(
-    modo,
-    funcionario = {}
-) {
-    const textoBotao =
-        modo === "cadastrar"
-            ? "Cadastrar"
-            : "Atualizar";
+function criarFormularioFuncionario(modo, funcionario = {}) {
+    const textoBotao = modo === "cadastrar" ? "Cadastrar" : "Atualizar";
 
     return `
         <form id="formFuncionario">
-
             <input
                 type="hidden"
                 id="funcionarioId"
@@ -551,10 +405,8 @@ function criarFormularioFuncionario(
             >
 
             <div class="form-grid">
-
                 <div class="form-group">
                     <label for="cpf">CPF</label>
-
                     <input
                         type="text"
                         id="cpf"
@@ -562,14 +414,12 @@ function criarFormularioFuncionario(
                         placeholder="000.000.000-00"
                         value="${formatarCpf(funcionario.cpf ?? "")}"
                         required
+                        ${modo === "atualizar" ? "readonly" : ""}
                     >
                 </div>
 
                 <div class="form-group">
-                    <label for="matricula">
-                        Matrícula
-                    </label>
-
+                    <label for="matricula">Matrícula</label>
                     <input
                         type="number"
                         id="matricula"
@@ -580,10 +430,7 @@ function criarFormularioFuncionario(
                 </div>
 
                 <div class="form-group full-width">
-                    <label for="nome">
-                        Nome completo
-                    </label>
-
+                    <label for="nome">Nome completo</label>
                     <input
                         type="text"
                         id="nome"
@@ -594,7 +441,6 @@ function criarFormularioFuncionario(
 
                 <div class="form-group">
                     <label for="email">E-mail</label>
-
                     <input
                         type="email"
                         id="email"
@@ -604,55 +450,35 @@ function criarFormularioFuncionario(
                 </div>
 
                 <div class="form-group">
-                    <label for="telefone">
-                        Telefone
-                    </label>
-
+                    <label for="telefone">Telefone</label>
                     <input
                         type="text"
                         id="telefone"
                         maxlength="15"
-                        value="${formatarTelefone(
-                            funcionario.telefone ?? ""
-                        )}"
+                        value="${formatarTelefone(funcionario.telefone ?? "")}"
                         required
                     >
                 </div>
 
                 <div class="form-group">
-                    <label for="dataDeNascimento">
-                        Data de nascimento
-                    </label>
-
+                    <label for="dataDeNascimento">Data de nascimento</label>
                     <input
                         type="date"
                         id="dataDeNascimento"
-                        value="${
-                            funcionario.dataDeNascimento ?? ""
-                        }"
+                        value="${funcionario.dataDeNascimento ?? ""}"
                         required
                     >
                 </div>
 
                 <div class="form-group">
-                    <label for="hierarquia">
-                        Hierarquia
-                    </label>
-
-                    <select
-                        id="hierarquia"
-                        required
-                    >
-                        ${criarOpcoesHierarquia(
-                            funcionario.hierarquia
-                        )}
+                    <label for="hierarquia">Hierarquia</label>
+                    <select id="hierarquia" required>
+                        ${criarOpcoesHierarquia(funcionario.hierarquia)}
                     </select>
                 </div>
-
             </div>
 
             <div class="form-actions">
-
                 <button
                     type="button"
                     class="btn-secondary"
@@ -660,7 +486,6 @@ function criarFormularioFuncionario(
                 >
                     Cancelar
                 </button>
-
                 <button
                     type="submit"
                     id="btnEnviarFormulario"
@@ -668,16 +493,12 @@ function criarFormularioFuncionario(
                 >
                     ${textoBotao}
                 </button>
-
             </div>
-
         </form>
     `;
 }
 
-function criarOpcoesHierarquia(
-    hierarquiaSelecionada = ""
-) {
+function criarOpcoesHierarquia(hierarquiaSelecionada = "") {
     const hierarquias = [
         "Funcionario",
         "Supervisor",
@@ -685,26 +506,11 @@ function criarOpcoesHierarquia(
         "Administrador"
     ];
 
-    let opcoes = `
-        <option value="">
-            Selecione
-        </option>
-    `;
+    let opcoes = `<option value="">Selecione</option>`;
 
     hierarquias.forEach(function (hierarquia) {
-        const selecionado =
-            hierarquia === hierarquiaSelecionada
-                ? "selected"
-                : "";
-
-        opcoes += `
-            <option
-                value="${hierarquia}"
-                ${selecionado}
-            >
-                ${hierarquia}
-            </option>
-        `;
+        const selecionado = hierarquia === hierarquiaSelecionada ? "selected" : "";
+        opcoes += `<option value="${hierarquia}" ${selecionado}>${hierarquia}</option>`;
     });
 
     return opcoes;
@@ -712,87 +518,44 @@ function criarOpcoesHierarquia(
 
 function obterDadosFormulario() {
     return {
-        cpf: removerFormatacao(
-            document.getElementById("cpf").value
-        ),
-
-        matricula: Number(
-            document.getElementById("matricula").value
-        ),
-
-        nome: document
-            .getElementById("nome")
-            .value
-            .trim(),
-
-        email: document
-            .getElementById("email")
-            .value
-            .trim(),
-
-        telefone: removerFormatacao(
-            document.getElementById("telefone").value
-        ),
-
-        dataDeNascimento: document
-            .getElementById("dataDeNascimento")
-            .value,
-
-        hierarquia: document
-            .getElementById("hierarquia")
-            .value
+        cpf: removerFormatacao(document.getElementById("cpf").value),
+        matricula: Number(document.getElementById("matricula").value),
+        nome: document.getElementById("nome").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        telefone: removerFormatacao(document.getElementById("telefone").value),
+        dataDeNascimento: document.getElementById("dataDeNascimento").value,
+        hierarquia: document.getElementById("hierarquia").value
     };
 }
 
 /* =========================
-   MÁSCARAS
+   MÁSCARAS E MENSAGENS AUXILIARES
 ========================= */
 
 function aplicarMascaras() {
-    const cpfInput =
-        document.getElementById("cpf");
-
-    const telefoneInput =
-        document.getElementById("telefone");
-
-    const btnCancelar =
-        document.getElementById(
-            "btnCancelarFormulario"
-        );
+    const cpfInput = document.getElementById("cpf");
+    const telefoneInput = document.getElementById("telefone");
+    const btnCancelar = document.getElementById("btnCancelarFormulario");
 
     if (cpfInput) {
-        cpfInput.addEventListener(
-            "input",
-            function () {
-                this.value =
-                    formatarCpf(this.value);
-            }
-        );
+        cpfInput.addEventListener("input", function () {
+            this.value = formatarCpf(this.value);
+        });
     }
 
     if (telefoneInput) {
-        telefoneInput.addEventListener(
-            "input",
-            function () {
-                this.value =
-                    formatarTelefone(this.value);
-            }
-        );
+        telefoneInput.addEventListener("input", function () {
+            this.value = formatarTelefone(this.value);
+        });
     }
 
     if (btnCancelar) {
-        btnCancelar.addEventListener(
-            "click",
-            fecharModal
-        );
+        btnCancelar.addEventListener("click", fecharModal);
     }
 }
 
 function formatarCpf(valor) {
-    const numeros =
-        removerFormatacao(String(valor))
-            .slice(0, 11);
-
+    const numeros = removerFormatacao(String(valor)).slice(0, 11);
     return numeros
         .replace(/(\d{3})(\d)/, "$1.$2")
         .replace(/(\d{3})(\d)/, "$1.$2")
@@ -800,16 +563,12 @@ function formatarCpf(valor) {
 }
 
 function formatarTelefone(valor) {
-    const numeros =
-        removerFormatacao(String(valor))
-            .slice(0, 11);
-
+    const numeros = removerFormatacao(String(valor)).slice(0, 11);
     if (numeros.length <= 10) {
         return numeros
             .replace(/(\d{2})(\d)/, "($1) $2")
             .replace(/(\d{4})(\d)/, "$1-$2");
     }
-
     return numeros
         .replace(/(\d{2})(\d)/, "($1) $2")
         .replace(/(\d{5})(\d)/, "$1-$2");
@@ -819,37 +578,24 @@ function removerFormatacao(valor) {
     return String(valor).replace(/\D/g, "");
 }
 
-/* =========================
-   FUNÇÕES AUXILIARES
-========================= */
-
 function criarHeaders() {
     const headers = {
         "Content-Type": "application/json"
     };
 
-    const token =
-        localStorage.getItem("token");
-
+    const token = localStorage.getItem("token");
     if (token) {
-        headers.Authorization =
-            `Bearer ${token}`;
+        headers.Authorization = `Bearer ${token}`;
     }
 
     return headers;
 }
 
 async function lerResposta(response) {
-    const contentType =
-        response.headers.get("content-type");
-
-    if (
-        contentType &&
-        contentType.includes("application/json")
-    ) {
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
         return await response.json();
     }
-
     return null;
 }
 
@@ -863,31 +609,20 @@ function obterMensagemErro(resposta) {
 }
 
 function exibirMensagem(texto, tipo) {
+    if (!modalMensagem) return;
     modalMensagem.textContent = texto;
-
-    modalMensagem.className =
-        `mensagem ${tipo}`;
+    modalMensagem.className = `mensagem ${tipo}`;
 }
 
 function ocultarMensagem() {
+    if (!modalMensagem) return;
     modalMensagem.textContent = "";
-
-    modalMensagem.className =
-        "mensagem";
+    modalMensagem.className = "mensagem";
 }
 
-function alterarBotaoFormulario(
-    carregando,
-    texto
-) {
-    const botao =
-        document.getElementById(
-            "btnEnviarFormulario"
-        );
-
-    if (!botao) {
-        return;
-    }
+function alterarBotaoFormulario(carregando, texto) {
+    const botao = document.getElementById("btnEnviarFormulario");
+    if (!botao) return;
 
     botao.disabled = carregando;
     botao.textContent = texto;
@@ -897,46 +632,21 @@ let tempoToast;
 
 function mostrarToast(tipo, titulo, mensagem) {
     const toast = document.getElementById("toast");
-    const toastTitulo =
-        document.getElementById("toastTitulo");
-    const toastMensagem =
-        document.getElementById("toastMensagem");
+    const toastTitulo = document.getElementById("toastTitulo");
+    const toastMensagem = document.getElementById("toastMensagem");
 
-    if (!toast || !toastTitulo || !toastMensagem) {
-        console.error(
-            "Os elementos do toast não foram encontrados no HTML."
-        );
+    if (!toast || !toastTitulo || !toastMensagem) return;
 
-        return;
-    }
-
-    /*
-        Remove apenas as classes usadas anteriormente,
-        evitando que o toast mantenha duas cores.
-    */
-    toast.classList.remove(
-        "show",
-        "success",
-        "error",
-        "warning",
-        "info"
-    );
-
+    toast.classList.remove("show", "success", "error", "warning", "info");
     toast.classList.add(tipo);
 
     toastTitulo.textContent = titulo;
     toastMensagem.textContent = mensagem;
 
-    /*
-        Força o navegador a reconhecer que a classe
-        show foi removida antes de adicioná-la novamente.
-    */
     void toast.offsetWidth;
-
     toast.classList.add("show");
 
     clearTimeout(tempoToast);
-
     tempoToast = setTimeout(function () {
         toast.classList.remove("show");
     }, 3000);

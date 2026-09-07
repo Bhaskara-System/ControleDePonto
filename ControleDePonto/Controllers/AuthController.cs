@@ -44,11 +44,19 @@ namespace ControleDePonto.Controllers {
         }
 
         [HttpPost("register")]
-        public IActionResult? CriarUsuario(CriarUsuarioDto dto) {
+        public IActionResult? CriarUsuario([FromBody] CriarUsuarioDto dto) {
 
-            var usuario = _usuarioService.CriarUsuario(dto);
+            try { 
 
-            return Created("", usuario);
+                var usuario = _usuarioService.CriarUsuario(dto);
+                return Created(string.Empty, usuario);
+            }
+
+            catch (Exception ex) { 
+
+                return BadRequest(new {menssagem  = ex.Message});
+
+            }
         }
 
 

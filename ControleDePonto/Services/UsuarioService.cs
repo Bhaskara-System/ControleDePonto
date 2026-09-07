@@ -86,7 +86,8 @@ namespace ControleDePonto.Services {
 
                 Nome = dto.Nome,
                 Email = dto.Email,
-                Perfil = "Cliente"
+                Perfil = dto.Perfil,
+                FuncionarioId = dto.FuncionarioId,
 
             };
 

@@ -36,14 +36,59 @@ body {
     text-decoration: none;
     padding: 12px;
     border-radius: 8px;
+    transition: background 0.2s ease;
 }
 
-.sidebar nav a:hover {
+.sidebar nav a:hover,
+.sidebar nav a.active {
     background: #1e293b;
+}
+/* --- ÁREA DO RODAPÉ DA SIDEBAR (PERFIL + SAIR) --- */
+
+.sidebar-footer {
+    margin-top: auto; /* Empurra todo o bloco para o fundo da sidebar */
+    padding-top: 20px;
+    border-top: 1px solid #1e293b; /* Divisória discreta */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-profile .avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Evita que nomes muito longos quebrem o layout */
+}
+
+.user-name {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #f8fafc;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.user-role {
+    font-size: 0.75rem;
+    color: #94a3b8;
 }
 
 #btnSair {
-    margin-top: auto;
+    width: 100%;
     padding: 12px;
     border: none;
     border-radius: 8px;
@@ -51,7 +96,14 @@ body {
     color: white;
     font-weight: bold;
     cursor: pointer;
+    transition: background 0.2s ease;
 }
+
+#btnSair:hover {
+    background: #b91c1c;
+}
+
+/* --- CONTEÚDO PRINCIPAL --- */
 
 .content {
     flex: 1;

@@ -1,49 +1,157 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Home | Controle de Ponto</title>
+
     <link rel="stylesheet" href="css/home.css">
 </head>
+
 <body>
 
+    <!-- Sidebar -->
     <aside class="sidebar">
+
         <h2>Controle de Ponto</h2>
 
         <nav>
-            <a href="/home.html">Início</a>
-            <a href="#">Funcionários</a>
-            <a href="/registros.html">Registros</a>
-            <a href="/administracao_funcionarios.html">Painel Administrativo</a>
+            <a href="/home.html" class="active">
+                Início
+            </a>
+
+            <a href="#">
+                Funcionários
+            </a>
+
+            <a href="/registros.html">
+                Registros
+            </a>
+
+            <a href="/administracao_funcionarios.html">
+                Painel Administrativo
+            </a>
         </nav>
 
-        <button id="btnSair">Sair</button>
+
+        <!-- Perfil + Botão Sair -->
+        <div class="sidebar-footer">
+
+            <!-- Link para o perfil -->
+            <a
+                href="/perfil.html"
+                class="user-profile-btn"
+                title="Ver meu perfil">
+
+                <div class="user-profile">
+
+                    <img
+                        id="avatarSidebar"
+                        src="/ft_perfil/sem_foto.png"
+                        alt="Foto do Usuário"
+                        class="avatar"
+                    >
+
+                    <div class="user-info">
+
+                        <span
+                            class="user-name"
+                            id="nomeSidebar">
+                            Nome do Usuário
+                        </span>
+
+                        <span
+                            class="user-role"
+                            id="cargoSidebar">
+                            Administrador
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+
+            <!-- Sair -->
+            <button
+                id="btnSair"
+                type="button">
+                Sair
+            </button>
+
+        </div>
+
     </aside>
 
+
+    <!-- Conteúdo principal -->
     <main class="content">
+
         <header>
-            <h1>Home</h1>
-            <p id="usuarioLogado">Bem-vindo!</p>
+
+            <h1>
+                Home
+            </h1>
+
+            <p id="usuarioLogado">
+                Bem-vindo!
+            </p>
+
         </header>
 
+
+        <!-- Cards -->
         <section class="cards">
-            <div class="card">
-                <h3>Funcionários</h3>
-                <p>Gerencie os funcionários cadastrados.</p>
-            </div>
 
             <div class="card">
-                <h3>Registros</h3>
-                <p>Acompanhe os registros de ponto.</p>
+
+                <h3>
+                    Funcionários
+                </h3>
+
+                <p>
+                    Gerencie os funcionários cadastrados.
+                </p>
+
             </div>
 
+
             <div class="card">
-                <h3>Relatórios</h3>
-                <p>Visualize relatórios do sistema.</p>
+
+                <h3>
+                    Registros
+                </h3>
+
+                <p>
+                    Acompanhe os registros de ponto.
+                </p>
+
             </div>
+
+
+            <div class="card">
+
+                <h3>
+                    Relatórios
+                </h3>
+
+                <p>
+                    Visualize relatórios do sistema.
+                </p>
+
+            </div>
+
         </section>
+
     </main>
 
-    <script src="js/home.js"></script>
+
+    <!-- Importa o script único global que gerencia sessão, sidebar e mensagem de boas-vindas -->
+    <script src="js/global.js"></script>
+
 </body>
+
 </html>

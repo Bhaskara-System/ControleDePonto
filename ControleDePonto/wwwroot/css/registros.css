@@ -35,6 +35,7 @@ body {
     text-decoration: none;
     padding: 12px;
     border-radius: 8px;
+    transition: background 0.2s ease;
 }
 
 .sidebar nav a:hover,
@@ -42,8 +43,52 @@ body {
     background: #1e293b;
 }
 
+/* --- RODAPÉ DA SIDEBAR (PERFIL + BOTÃO SAIR) --- */
+
+.sidebar-footer {
+    margin-top: auto; /* Empurra o bloco do perfil para o fundo */
+    padding-top: 20px;
+    border-top: 1px solid #1e293b;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-profile .avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.user-name {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #f8fafc;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.user-role {
+    font-size: 0.75rem;
+    color: #94a3b8;
+}
+
 #btnSair {
-    margin-top: auto;
+    width: 100%;
     padding: 12px;
     border: none;
     border-radius: 8px;
@@ -51,7 +96,14 @@ body {
     color: white;
     font-weight: bold;
     cursor: pointer;
+    transition: background 0.2s ease;
 }
+
+#btnSair:hover {
+    background: #b91c1c;
+}
+
+/* --- CONTEÚDO PRINCIPAL --- */
 
 .content {
     flex: 1;
@@ -71,6 +123,8 @@ header p {
     margin-top: 5px;
 }
 
+/* --- TABELA DE REGISTROS --- */
+
 .table-card {
     background: white;
     border-radius: 14px;
@@ -89,6 +143,14 @@ thead {
     color: white;
 }
 
+thead tr th:first-child {
+    border-top-left-radius: 8px;
+}
+
+thead tr th:last-child {
+    border-top-right-radius: 8px;
+}
+
 th, td {
     padding: 14px;
     text-align: left;
@@ -97,4 +159,32 @@ th, td {
 
 tbody tr:hover {
     background: #f8fafc;
+}
+
+/* --- BADGES / ETIQUETAS DE STATUS --- */
+
+.status {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+/* Classes utilitárias para dinamizar via JS */
+.status.normal, 
+.status.presente {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.status.atrasado {
+    background: #fef9c3;
+    color: #a16207;
+}
+
+.status.falta, 
+.status.ausente {
+    background: #fee2e2;
+    color: #b91c1c;
 }

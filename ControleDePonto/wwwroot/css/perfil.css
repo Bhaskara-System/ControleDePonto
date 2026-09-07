@@ -1,0 +1,609 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  }
+
+body {
+font-family: Arial, sans-serif;
+display: flex;
+min-height: 100vh;
+background: #f1f5f9;
+}
+
+/* =========================
+BARRA LATERAL
+========================= */
+
+.sidebar {
+    width: 260px;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    flex-shrink: 0;
+    background: #0f172a;
+    color: white;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.sidebar h2 {
+    margin-bottom: 35px;
+}
+
+.sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sidebar nav a {
+    color: white;
+    text-decoration: none;
+    padding: 12px;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+
+.sidebar nav a:hover,
+.sidebar nav a.active {
+    background: #1e293b;
+}
+
+/* =========================
+RODAPÉ DA SIDEBAR
+========================= */
+
+.sidebar-footer {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid #1e293b;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-profile .avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.user-name {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #f8fafc;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.user-role {
+    font-size: 0.75rem;
+    color: #94a3b8;
+}
+
+/* =========================
+BOTÃO SAIR
+========================= */
+
+#btnSair {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: #dc2626;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+#btnSair:hover {
+    background: #b91c1c;
+}
+
+/* =========================
+CONTEÚDO
+========================= */
+
+.content {
+flex: 1;
+min-width: 0;
+padding: 35px;
+}
+
+.content > header {
+margin-bottom: 30px;
+}
+
+.content > header h1 {
+color: #0f172a;
+}
+
+.content > header p {
+color: #64748b;
+margin-top: 5px;
+}
+
+/* =========================
+CARD DO PERFIL
+========================= */
+
+.profile-card {
+width: 100%;
+max-width: 950px;
+
+
+background: white;
+
+padding: 25px;
+
+border-radius: 14px;
+
+box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+
+
+}
+
+/* =========================
+CABEÇALHO DO PERFIL
+========================= */
+
+.profile-header {
+display: flex;
+align-items: center;
+gap: 18px;
+
+
+padding-bottom: 25px;
+margin-bottom: 25px;
+
+border-bottom: 1px solid #e2e8f0;
+
+
+}
+
+.perfil-avatar {
+width: 85px;
+height: 85px;
+
+
+border-radius: 50%;
+
+object-fit: cover;
+
+border: 3px solid #e2e8f0;
+
+
+}
+
+.profile-header-info {
+display: flex;
+flex-direction: column;
+gap: 6px;
+}
+
+.profile-header-info h2 {
+color: #0f172a;
+font-size: 24px;
+}
+
+.profile-header-info span {
+color: #64748b;
+font-size: 14px;
+}
+
+/* =========================
+SEÇÃO DO PERFIL
+========================= */
+
+.profile-section {
+padding-bottom: 25px;
+margin-bottom: 25px;
+
+
+border-bottom: 1px solid #e2e8f0;
+
+
+}
+
+.section-header {
+margin-bottom: 20px;
+}
+
+.section-header h2 {
+color: #0f172a;
+font-size: 19px;
+margin-bottom: 5px;
+}
+
+.section-header p {
+color: #64748b;
+font-size: 14px;
+}
+
+/* =========================
+FORMULÁRIO
+========================= */
+
+.form-grid {
+display: grid;
+grid-template-columns: repeat(2, minmax(0, 1fr));
+gap: 18px;
+}
+
+.form-group {
+display: flex;
+flex-direction: column;
+}
+
+.form-group.full-width {
+grid-column: 1 / -1;
+}
+
+.form-group label {
+color: #0f172a;
+margin-bottom: 8px;
+font-weight: bold;
+}
+
+.form-group input {
+width: 100%;
+padding: 12px;
+
+
+border: 1px solid #cbd5e1;
+border-radius: 8px;
+
+background: white;
+color: #0f172a;
+
+font-family: Arial, sans-serif;
+font-size: 15px;
+
+outline: none;
+
+transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+
+
+}
+
+/* =========================
+CAMPOS SOMENTE LEITURA
+========================= */
+
+.form-group input[readonly] {
+background: #f8fafc;
+color: #475569;
+}
+
+/* =========================
+CAMPOS DESABILITADOS
+========================= */
+
+.form-group input:disabled {
+background: #e2e8f0;
+color: #64748b;
+cursor: not-allowed;
+}
+
+/* =========================
+CAMPOS EDITÁVEIS
+========================= */
+
+.form-group input:not([readonly]):not(:disabled) {
+background: white;
+}
+
+.form-group input:not(:disabled):focus {
+border-color: #0f172a;
+
+
+box-shadow:
+    0 0 0 3px rgba(15, 23, 42, 0.12);
+
+
+}
+
+/* =========================
+AÇÕES
+========================= */
+
+.form-actions {
+display: flex;
+justify-content: flex-end;
+gap: 12px;
+
+
+margin-top: 25px;
+padding-top: 20px;
+
+border-top: 1px solid #e2e8f0;
+
+
+}
+
+/* =========================
+BOTÕES
+========================= */
+
+.btn-primary,
+.btn-secondary {
+padding: 12px 22px;
+
+
+border-radius: 8px;
+
+font-family: Arial, sans-serif;
+font-weight: bold;
+
+cursor: pointer;
+text-decoration: none;
+font-size: 14px;
+
+
+}
+
+.btn-primary {
+border: none;
+
+
+background: #0f172a;
+color: white;
+
+
+}
+
+.btn-primary:hover {
+background: #1e293b;
+}
+
+.btn-primary:disabled {
+opacity: 0.6;
+cursor: not-allowed;
+}
+
+.btn-secondary {
+border: none;
+
+
+background: #e2e8f0;
+color: #0f172a;
+
+
+}
+
+.btn-secondary:hover {
+background: #cbd5e1;
+}
+
+/* =========================
+ELEMENTOS OCULTOS
+========================= */
+
+[hidden] {
+display: none !important;
+}
+
+/* =========================
+NOTIFICAÇÃO TOAST
+========================= */
+
+#toast {
+position: fixed;
+
+
+top: 25px;
+right: 25px;
+
+z-index: 9999;
+
+min-width: 320px;
+max-width: 420px;
+
+padding: 16px 20px;
+
+border-radius: 10px;
+
+color: white;
+
+box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+
+opacity: 0;
+visibility: hidden;
+
+transform: translateX(120%);
+
+transition:
+    opacity 0.4s ease,
+    transform 0.4s ease,
+    visibility 0.4s;
+
+
+}
+
+#toast.show {
+opacity: 1;
+visibility: visible;
+
+
+transform: translateX(0);
+
+
+}
+
+#toast.success {
+background: #15803d;
+}
+
+#toast.error {
+background: #dc2626;
+}
+
+#toast.warning {
+background: #d97706;
+}
+
+#toast.info {
+background: #0f172a;
+}
+
+#toast strong {
+display: block;
+margin-bottom: 5px;
+
+
+font-size: 16px;
+
+
+}
+
+#toast p {
+margin: 0;
+
+
+color: inherit;
+
+font-size: 14px;
+line-height: 1.4;
+
+
+}
+
+/* =========================
+RESPONSIVIDADE
+========================= */
+
+@media (max-width: 800px) {
+
+
+body {
+    flex-direction: column;
+}
+
+.sidebar {
+    width: 100%;
+    height: auto;
+    min-height: auto;
+
+    overflow-y: visible;
+}
+
+.sidebar nav {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.sidebar-footer {
+    margin-top: 25px;
+}
+
+.content {
+    padding: 25px;
+}
+
+.profile-card {
+    max-width: 100%;
+}
+
+
+}
+
+@media (max-width: 650px) {
+
+
+.form-grid {
+    grid-template-columns: 1fr;
+}
+
+.form-group.full-width {
+    grid-column: auto;
+}
+
+.form-actions {
+    flex-direction: column;
+}
+
+.form-actions button,
+.form-actions a {
+    width: 100%;
+    text-align: center;
+}
+
+.profile-header {
+    align-items: flex-start;
+}
+
+.perfil-avatar {
+    width: 70px;
+    height: 70px;
+}
+
+.profile-header-info h2 {
+    font-size: 20px;
+}
+
+
+}
+
+@media (max-width: 500px) {
+
+
+#toast {
+    top: 15px;
+    right: 15px;
+    left: 15px;
+
+    min-width: auto;
+    max-width: none;
+}
+
+
+}
+
+@media (max-width: 450px) {
+
+
+.sidebar nav {
+    grid-template-columns: 1fr;
+}
+
+.content {
+    padding: 20px;
+}
+
+.profile-card {
+    padding: 20px;
+}
+
+.profile-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.profile-header-info {
+    align-items: center;
+}
+
+
+}

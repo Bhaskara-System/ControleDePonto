@@ -26,6 +26,7 @@ namespace ControleDePonto {
             // Injeção de denpendencia
             builder.Services.AddScoped<FuncionarioRepository>();
             builder.Services.AddScoped<FuncionarioService>();
+            builder.Services.AddScoped<PerfilService>();
 
             // Injeção de denpendencia
             builder.Services.AddScoped<UsuarioRepository>();
@@ -65,6 +66,7 @@ namespace ControleDePonto {
             builder.Services.AddAuthorization();
 
             builder.Services.AddAutoMapper(typeof(FuncionarioProfile));
+            builder.Services.AddAutoMapper(typeof(PerfilProfile));
             // builder.Services.AddAutoMapper(typeof(UsuarioProfile));
 
 

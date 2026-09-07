@@ -12,6 +12,9 @@ namespace ControleDePonto.Models {
         public string Telefone { get; set; }
         public DateOnly? DataDeNascimento { get; set; }
         public string Hierarquia { get; set; } = string.Empty;
+        public string FotoUrl { get; set; }
+
+        public Usuario? Usuario { get; set; }
         // public string Setor { get; set; } = string.Empty;
     }
 }
